@@ -1,0 +1,33 @@
+name: laracats
+services:
+  apache:
+    image: php:8.2-apache
+    tty: true
+    stdin_open: true
+    restart: always
+    working_dir: /var/www/html/
+    volumes:
+      - ./ExLaracats:/var/www/html/
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "8100:80"
+  mariadb:
+    image: mariadb:11.2
+    tty: true
+    stdin_open: true
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: gabri
+    ports:
+      - "8101:3306"
+  phpmyadmin:
+    image: phpmyadmin
+    tty: true
+    stdin_open: true
+    environment:
+      PMA_PORT: 3306
+      PMA_HOST: mariadb
+    ports:
+      - "8110:80"
